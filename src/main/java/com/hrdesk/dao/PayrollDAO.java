@@ -2,19 +2,19 @@ package com.hrdesk.dao;
 
 import java.util.List;
 
-import com.hrdesk.dto.Payroll;
+import com.hrdesk.dto.PayrollDTO;
 
 public interface PayrollDAO {
-	 boolean addPayroll(Payroll payroll);
+	 boolean addPayroll(PayrollDTO payroll);
 
-	    boolean updatePayroll(Payroll payroll);
+	    boolean updatePayroll(PayrollDTO payroll);
 
 	    boolean deletePayroll(int payrollId);
 
-	    Payroll getPayrollById(int payrollId);
+	    PayrollDTO getPayrollById(int payrollId);
 
-	    List<Payroll> getPayrollByEmployee(int employeeId);
+	    List<PayrollDTO> getPayrollByEmployee(int employeeId);
 
-	    List<Payroll> getAllPayroll();
+	    List<PayrollDTO> getAllPayroll();
 
 }

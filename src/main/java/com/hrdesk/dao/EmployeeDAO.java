@@ -2,17 +2,17 @@ package com.hrdesk.dao;
 
 import java.util.List;
 
-import com.hrdesk.dto.Employee;
+import com.hrdesk.dto.EmployeeDTO;
 
 public interface EmployeeDAO {
-	boolean addEmployee(Employee employee);
+	boolean addEmployee(EmployeeDTO employee);
 
-    boolean updateEmployee(Employee employee);
+    boolean updateEmployee(EmployeeDTO employee);
 
     boolean deleteEmployee(int employeeId);
 
-    Employee getEmployeeById(int employeeId);
+    EmployeeDTO getEmployeeById(int employeeId);
 
-    List<Employee> getAllEmployees();
+    List<EmployeeDTO> getAllEmployees();
 
 }

@@ -3,20 +3,20 @@ package com.hrdesk.dao;
 import java.util.Date;
 import java.util.List;
 
-import com.hrdesk.dto.Attendance;
+import com.hrdesk.dto.AttendanceDTO;
 
 public interface AttendanceDAO {
-	boolean markAttendance(Attendance attendance);
+	boolean markAttendance(AttendanceDTO attendance);
 
-    boolean updateAttendance(Attendance attendance);
+    boolean updateAttendance(AttendanceDTO attendance);
 
     boolean deleteAttendance(int attendanceId);
 
-    Attendance getAttendanceById(int attendanceId);
+    AttendanceDTO getAttendanceById(int attendanceId);
 
-    List<Attendance> getAttendanceByEmployee(int employeeId);
+    List<AttendanceDTO> getAttendanceByEmployee(int employeeId);
 
-    List<Attendance> getAttendanceByDate(Date attendanceDate);
+    List<AttendanceDTO> getAttendanceByDate(Date attendanceDate);
 
-    List<Attendance> getAllAttendance();
+    List<AttendanceDTO> getAllAttendance();
 }
