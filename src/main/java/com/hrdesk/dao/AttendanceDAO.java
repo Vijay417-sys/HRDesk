@@ -18,10 +18,9 @@ public interface AttendanceDAO {
 
     List<AttendanceDTO> getAttendanceByDate(Date attendanceDate);
 
-<<<<<<< HEAD
+
     List<AttendanceDTO> getAllAttendance();
-=======
+
     List<Attendance> getAllAttendance();
-    
->>>>>>> 6bf9c4f2ad53ee8c0277f502c94b9039b86a32ca
+
 }
