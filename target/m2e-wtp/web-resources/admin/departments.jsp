@@ -3,9 +3,14 @@
 <%
     User user = (User) session.getAttribute("user");
     if (user == null || !"ADMIN".equals(user.getRole())) {
-        response.sendRedirect(request.getContextPath() + "/login.jsp"); return;
+        response.sendRedirect(request.getContextPath() + "/login"); return;
     }
     List<DeptDTO> depts = (List<DeptDTO>) request.getAttribute("departments");
+
+    String successMsg = (String) session.getAttribute("successMsg");
+    String errorMsg   = (String) session.getAttribute("errorMsg");
+    if (successMsg != null) session.removeAttribute("successMsg");
+    if (errorMsg   != null) session.removeAttribute("errorMsg");
 %>
 <%@ include file="../includes/header.jsp" %>
 <script>document.getElementById('page-title').textContent='Departments';document.getElementById('page-breadcrumb').textContent='HRDesk / Admin / Departments';</script>
@@ -15,25 +20,16 @@
     <div class="lg:col-span-1">
         <div class="card p-6" style="box-shadow:0 1px 4px rgba(0,0,0,.06);">
             <h3 class="text-sm font-semibold text-gray-900 mb-4">Add Department</h3>
-            <% if (request.getAttribute("error") != null) { %>
-            <div class="bg-red-50 border border-red-200 text-red-700 px-3 py-2.5 rounded-lg mb-4 text-xs"><%= request.getAttribute("error") %></div>
+            <% if (successMsg != null) { %>
+            <div class="bg-green-50 border border-green-200 text-green-700 px-3 py-2.5 rounded-lg mb-4 text-xs"><%= successMsg %></div>
             <% } %>
-            <% if (request.getAttribute("success") != null) { %>
-            <div class="bg-green-50 border border-green-200 text-green-700 px-3 py-2.5 rounded-lg mb-4 text-xs"><%= request.getAttribute("success") %></div>
+            <% if (errorMsg != null) { %>
+            <div class="bg-red-50 border border-red-200 text-red-700 px-3 py-2.5 rounded-lg mb-4 text-xs"><%= errorMsg %></div>
             <% } %>
-            <form action="<%= request.getContextPath() %>/department" method="post" class="space-y-4">
-                <input type="hidden" name="action" value="add">
+            <form action="<%= request.getContextPath() %>/dept/add" method="post" class="space-y-4">
                 <div>
-                    <label class="input-label" for="deptName">Department Name *</label>
-                    <input type="text" id="deptName" name="deptName" class="input-field" placeholder="e.g. Engineering" required>
-                </div>
-                <div>
-                    <label class="input-label" for="deptCode">Department Code</label>
-                    <input type="text" id="deptCode" name="deptCode" class="input-field" placeholder="e.g. ENG">
-                </div>
-                <div>
-                    <label class="input-label" for="managerId">Manager ID</label>
-                    <input type="number" id="managerId" name="managerId" class="input-field" placeholder="Employee ID">
+                    <label class="input-label" for="departmentName">Department Name *</label>
+                    <input type="text" id="departmentName" name="departmentName" class="input-field" placeholder="e.g. Engineering" required>
                 </div>
                 <div>
                     <label class="input-label" for="location">Location</label>
@@ -60,9 +56,7 @@
                         <tr>
                             <th>#</th>
                             <th>Department</th>
-                            <th>Code</th>
-                            <th>Manager</th>
-                            <th>Employees</th>
+                            <th>Location</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -75,25 +69,23 @@
                             <td>
                                 <div class="flex items-center gap-2.5">
                                     <div class="w-7 h-7 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-700 text-xs font-bold">
-                                        <%= dept.getDeptName() != null && dept.getDeptName().length() > 0 ? dept.getDeptName().charAt(0) : "?" %>
+                                        <%= dept.getDepartmentName() != null && dept.getDepartmentName().length() > 0 ? dept.getDepartmentName().charAt(0) : "?" %>
                                     </div>
-                                    <span class="text-sm font-medium text-gray-900"><%= dept.getDeptName() != null ? dept.getDeptName() : "—" %></span>
+                                    <span class="text-sm font-medium text-gray-900"><%= dept.getDepartmentName() != null ? dept.getDepartmentName() : "—" %></span>
                                 </div>
                             </td>
-                            <td><span class="badge badge-gray"><%= dept.getDeptCode() != null ? dept.getDeptCode() : "—" %></span></td>
-                            <td class="text-gray-500 text-sm"><%= dept.getManagerId() > 0 ? "Emp #" + dept.getManagerId() : "—" %></td>
-                            <td><span class="badge badge-blue"><%= dept.getHeadcount() %></span></td>
+                            <td class="text-gray-500 text-sm"><%= dept.getLocation() != null ? dept.getLocation() : "—" %></td>
                             <td>
                                 <div class="flex items-center gap-2">
-                                    <button class="text-xs text-indigo-600 font-medium hover:underline">Edit</button>
+                                    <span class="text-xs text-gray-400">ID: <%= dept.getDepartmentId() %></span>
                                     <span class="text-gray-200">|</span>
-                                    <button onclick="if(confirm('Delete this department?')) location.href='<%= request.getContextPath() %>/department?action=delete&id=<%= dept.getDeptId() %>'" class="text-xs text-red-500 font-medium hover:underline">Delete</button>
+                                    <a href="<%= request.getContextPath() %>/dept/delete?id=<%= dept.getDepartmentId() %>" class="text-xs text-red-500 font-medium hover:text-red-700 no-underline" onclick="return confirm('Delete this department? This may affect associated employees.')">Delete</a>
                                 </div>
                             </td>
                         </tr>
                         <% } } else { %>
                         <tr>
-                            <td colspan="6" class="py-12 text-center text-sm text-gray-400">No departments found. Add your first department.</td>
+                            <td colspan="4" class="py-12 text-center text-sm text-gray-400">No departments found. Add your first department.</td>
                         </tr>
                         <% } %>
                     </tbody>
