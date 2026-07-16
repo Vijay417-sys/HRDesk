@@ -1,4 +1,5 @@
 com/hrdesk/dto/SupportTokenDTO.class
+com/hrdesk/servlet/DashboardServlet.class
 com/hrdesk/daoimp/DeptDAOImp.class
 com/hrdesk/dto/EmployeeDTO.class
 com/hrdesk/daoimp/LeaveDAOImp.class
@@ -26,6 +27,7 @@ com/hrdesk/dao/PayrollDAO.class
 com/hrdesk/servlet/AttendanceServlet.class
 com/hrdesk/servlet/LogoutServlet.class
 com/hrdesk/filter/AdminFilter.class
+com/hrdesk/servlet/DeptServlet.class
 com/hrdesk/dao/EmployeeDAO.class
 com/hrdesk/daoimp/UserDAOImpl.class
 com/hrdesk/dao/DeptDAO.class

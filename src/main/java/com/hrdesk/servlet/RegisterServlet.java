@@ -34,6 +34,7 @@ public class RegisterServlet extends HttpServlet {
 
         User user = new User();
         user.setUsername(username);
+        user.setEmail(email);
         user.setPassword(password);
         user.setRole(role != null ? role : "EMPLOYEE");
 

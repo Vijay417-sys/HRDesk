@@ -2,8 +2,8 @@
 <%@ page import="com.hrdesk.dto.User, com.hrdesk.dto.PayrollDTO, java.util.List" %>
 <%
     User user = (User) session.getAttribute("user");
-    if (user == null) { response.sendRedirect(request.getContextPath() + "/login.jsp"); return; }
-    List<PayrollDTO> slips = (List<PayrollDTO>) request.getAttribute("payslips");
+    if (user == null) { response.sendRedirect(request.getContextPath() + "/login"); return; }
+    List<PayrollDTO> slips = (List<PayrollDTO>) request.getAttribute("payrollList");
     PayrollDTO latest = (slips != null && !slips.isEmpty()) ? slips.get(0) : null;
 %>
 <%@ include file="../includes/header.jsp" %>
@@ -25,10 +25,8 @@
                     </div>
                 </div>
                 <div class="text-right">
-                    <p class="text-sm font-semibold text-gray-700"><%= latest != null ? latest.getPayMonth() : "—" %></p>
-                    <span class="badge <%= latest != null && "PAID".equals(latest.getStatus()) ? "badge-green" : "badge-yellow" %>">
-                        <%= latest != null ? (latest.getStatus() != null ? latest.getStatus() : "PENDING") : "—" %>
-                    </span>
+                    <p class="text-sm font-semibold text-gray-700"><%= latest != null ? latest.getPayrollMonth() : "—" %></p>
+                    <span class="badge badge-green">Paid</span>
                 </div>
             </div>
 
@@ -39,33 +37,33 @@
                 </div>
                 <div>
                     <p class="font-semibold text-gray-900"><%= user.getUsername() %></p>
-                    <p class="text-sm text-gray-400">Employee</p>
+                    <p class="text-sm text-gray-400">Employee ID: <%= user.getEmployeeId() %></p>
                 </div>
             </div>
 
             <!-- Salary Breakdown -->
+            <% if (latest != null) { %>
             <div class="space-y-3 mb-6">
                 <div class="flex justify-between py-2 border-b border-gray-50">
                     <span class="text-sm text-gray-600">Basic Salary</span>
-                    <span class="text-sm font-medium text-gray-900">₹<%= latest != null ? String.format("%,.0f", latest.getBaseSalary()) : "—" %></span>
-                </div>
-                <div class="flex justify-between py-2 border-b border-gray-50">
-                    <span class="text-sm text-gray-600">HRA</span>
-                    <span class="text-sm font-medium text-gray-900">₹<%= latest != null ? String.format("%,.0f", latest.getBaseSalary() * 0.2) : "—" %></span>
+                    <span class="text-sm font-medium text-gray-900">₹<%= String.format("%,.0f", latest.getBasicSalary()) %></span>
                 </div>
                 <div class="flex justify-between py-2 border-b border-gray-50">
                     <span class="text-sm text-green-600">Bonus</span>
-                    <span class="text-sm font-medium text-green-600">+₹<%= latest != null ? String.format("%,.0f", latest.getBonus()) : "—" %></span>
+                    <span class="text-sm font-medium text-green-600">+₹<%= String.format("%,.0f", latest.getBonus()) %></span>
                 </div>
                 <div class="flex justify-between py-2 border-b border-gray-50">
                     <span class="text-sm text-red-500">Deductions</span>
-                    <span class="text-sm font-medium text-red-500">-₹<%= latest != null ? String.format("%,.0f", latest.getDeductions()) : "—" %></span>
+                    <span class="text-sm font-medium text-red-500">-₹<%= String.format("%,.0f", latest.getDeduction()) %></span>
                 </div>
                 <div class="flex justify-between py-3 bg-indigo-50 rounded-lg px-4 mt-2">
                     <span class="text-sm font-bold text-gray-900">Net Pay</span>
-                    <span class="text-lg font-black text-indigo-600">₹<%= latest != null ? String.format("%,.0f", latest.getNetPay()) : "—" %></span>
+                    <span class="text-lg font-black text-indigo-600">₹<%= String.format("%,.0f", latest.getNetSalary()) %></span>
                 </div>
             </div>
+            <% } else { %>
+            <div class="py-10 text-center text-sm text-gray-400">No payslip available yet.</div>
+            <% } %>
 
             <button onclick="window.print()" class="btn-secondary w-full" style="justify-content:center;">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
@@ -83,12 +81,12 @@
             <div class="divide-y divide-gray-50">
                 <% if (slips != null && !slips.isEmpty()) {
                     for (PayrollDTO s : slips) { %>
-                <div class="px-5 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors cursor-pointer">
+                <div class="px-5 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
                     <div>
-                        <p class="text-sm font-medium text-gray-900"><%= s.getPayMonth() != null ? s.getPayMonth() : "—" %></p>
-                        <p class="text-xs text-gray-400">₹<%= String.format("%,.0f", s.getNetPay()) %></p>
+                        <p class="text-sm font-medium text-gray-900"><%= s.getPayrollMonth() != null ? s.getPayrollMonth() : "—" %></p>
+                        <p class="text-xs text-gray-400">₹<%= String.format("%,.0f", s.getNetSalary()) %></p>
                     </div>
-                    <span class="badge <%= "PAID".equals(s.getStatus()) ? "badge-green" : "badge-yellow" %>"><%= s.getStatus() != null ? s.getStatus() : "PENDING" %></span>
+                    <span class="badge badge-green">Paid</span>
                 </div>
                 <% } } else { %>
                 <div class="px-5 py-10 text-center text-sm text-gray-400">No payslips found.</div>
