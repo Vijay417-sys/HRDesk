@@ -1,8 +1,8 @@
 <%@ page import="com.hrdesk.dto.User" %>
 <%
-    User user = (User) session.getAttribute("user");
-    String userName = (user != null) ? user.getUsername() : "Guest";
-    String userRole = (user != null) ? user.getRole() : "";
+    User _hUser = (User) session.getAttribute("user");
+    String userName = (_hUser != null) ? _hUser.getUsername() : "Guest";
+    String userRole = (_hUser != null) ? _hUser.getRole() : "";
     String currentPage = request.getServletPath();
 %>
 <!DOCTYPE html>
@@ -55,7 +55,7 @@
 </head>
 <body class="text-gray-900">
 
-<% if (user != null) { %>
+<% if (_hUser != null) { %>
 <div class="flex min-h-screen">
     <!-- Sidebar -->
     <aside class="sidebar w-60 min-h-screen flex flex-col fixed left-0 top-0 z-40" style="box-shadow:1px 0 0 #e2e8f0;">

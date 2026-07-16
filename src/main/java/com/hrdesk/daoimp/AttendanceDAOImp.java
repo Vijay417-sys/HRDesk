@@ -28,7 +28,7 @@ public class AttendanceDAOImp implements AttendanceDAO {
 
         // Calculate working hours from check_in and check_out
         Time ci = rs.getTime("check_in");
-        Time co = rs.getTime("check_out"); // CHECKOUT
+        Time co = rs.getTime("check_out"); // CHECKOUTi 
         if (ci != null && co != null) {
             long diff = co.getTime() - ci.getTime();
             if (diff > 0)

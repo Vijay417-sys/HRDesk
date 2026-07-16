@@ -38,10 +38,14 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", user);
             session.setAttribute("username", user.getUsername());
             session.setAttribute("role", user.getRole());
+            session.setAttribute("employeeId", user.getEmployeeId());
+
             if ("ADMIN".equals(user.getRole())) {
+                // Admin → Admin Dashboard
                 response.sendRedirect(request.getContextPath() + "/dashboard");
             } else {
-                response.sendRedirect(request.getContextPath() + "/dashboard");
+                // Employee → Employee Dashboard
+                response.sendRedirect(request.getContextPath() + "/employee/dashboard");
             }
         } else {
             request.setAttribute("error", "Invalid email or password. Please try again.");

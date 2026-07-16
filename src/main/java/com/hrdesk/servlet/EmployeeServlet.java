@@ -36,9 +36,14 @@ public class EmployeeServlet extends HttpServlet {
         }
 
         String action = request.getPathInfo();
-        if (action == null) action = "/list";
+        if (action == null)
+            action = "/list";
 
         switch (action) {
+            case "/dashboard":
+                // Employee Dashboard – show logged-in employee's overview
+                request.getRequestDispatcher("/employee/dashboard.jsp").forward(request, response);
+                break;
             case "/add":
                 loadDepartments(request);
                 request.getRequestDispatcher("/admin/add-employee.jsp").forward(request, response);
@@ -75,7 +80,8 @@ public class EmployeeServlet extends HttpServlet {
         }
 
         String action = request.getPathInfo();
-        if (action == null) action = "/add";
+        if (action == null)
+            action = "/add";
 
         if ("/add".equals(action) || "/edit".equals(action)) {
             EmployeeDTO emp = new EmployeeDTO();
@@ -88,17 +94,21 @@ public class EmployeeServlet extends HttpServlet {
             emp.setLastName(request.getParameter("lastName") != null ? request.getParameter("lastName") : "");
             emp.setEmail(request.getParameter("email"));
             emp.setPhone(request.getParameter("phone"));
-            emp.setDesignation(request.getParameter("designation") != null ? request.getParameter("designation") : "EMPLOYEE");
+            emp.setDesignation(
+                    request.getParameter("designation") != null ? request.getParameter("designation") : "EMPLOYEE");
             emp.setStatus(request.getParameter("status") != null ? request.getParameter("status") : "ACTIVE");
             String deptIdStr = request.getParameter("departmentId");
-            if (deptIdStr != null && !deptIdStr.isEmpty()) emp.setDepartmentId(Integer.parseInt(deptIdStr));
+            if (deptIdStr != null && !deptIdStr.isEmpty())
+                emp.setDepartmentId(Integer.parseInt(deptIdStr));
             String salaryStr = request.getParameter("salary");
-            if (salaryStr != null && !salaryStr.isEmpty()) emp.setSalary(Double.parseDouble(salaryStr));
+            if (salaryStr != null && !salaryStr.isEmpty())
+                emp.setSalary(Double.parseDouble(salaryStr));
             String hireDate = request.getParameter("hireDate");
             if (hireDate != null && !hireDate.isEmpty()) {
                 try {
                     emp.setHireDate(java.sql.Date.valueOf(hireDate));
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             }
 
             boolean success;
